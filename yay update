@@ -1,0 +1,158 @@
+'''
+READ ME
+
+Right here is where I am going to be keeping every note for this code.
+
+Time calculation:
+at 0 the time is 14:08:12.997704
+at 100 the time is 14:08:13.324557
+
+13.324557-12.997704=0.326853
+
+it takes 0.326853 seconds to get to y+100
+
+
+
+
+
+'''
+
+
+import turtle
+import time
+import random
+import os
+import math
+import platform
+import winsound
+from datetime import datetime
+import pygame
+import keyboard #thease are all of the imports that we will need
+clock = pygame.time.Clock()
+
+global GRAVITY
+global GROUND_LEVEL
+global lenloop
+global len_animation
+GRAVITY=-0.8
+GROUND_LEVEL=-100
+lenloop=0
+len_animation=0
+
+catbunnywin=turtle.Screen() #this creates the window
+cbsprite = "/Users/dialarmsaw/mu_code/cbgood.gif"# this registers the sprite of the character
+catbunnywin.register_shape(cbsprite)#            #
+catbunnywin.bgcolor("purple")
+
+cb1="/Users/dialarmsaw/mu_code/cbs1tp.gif"
+cb2="/Users/Dialarmsaw/mu_code/cbs2tp.gif"
+catbunnywin.register_shape(cb1)
+catbunnywin.register_shape(cb2)
+
+# This is the catbunny turtle
+catbunny=turtle.Turtle()            
+catbunny.shape(cbsprite) 
+catbunny.penup()                    
+catx=catbunny.xcor()                
+caty=catbunny.ycor()
+catbunny.dx = 0
+catbunny.dy = 0
+catbunny.state="ready"
+catbunny.height = 85
+# Draw ground
+'''
+pen = turtle.Turtle()
+pen.speed(0)
+pen.pensize(3)
+pen.shape("square")
+pen.color("white")
+pen.penup()
+pen.goto(-500, GROUND_LEVEL)
+pen.pendown()
+pen.goto(500, GROUND_LEVEL)
+pen.penup()
+'''
+gnd=turtle.Turtle()
+gnd.shape('square')
+gnd.shapesize(0.5,70)
+gnd.penup()
+gnd.setposition(0,-100)
+
+### CATBUNNY MOVEMENT ###
+
+def jump():
+    if catbunny.state == "ready":
+        catbunny.dy = 15
+        catbunny.state = "jumping"
+
+
+def move_left():
+    catbunny.dx = -6 #change the value for different movement speed
+
+
+def move_right():
+    catbunny.dx = 6 #change the value for different movement speed
+
+
+def triggermove():
+    if keyboard.is_pressed('d'):
+        move_right()
+    elif keyboard.is_pressed('a'):
+        move_left()
+    elif keyboard.is_pressed('d')==False:
+        catbunny.dx=0
+    elif keyboard.is_pressed('a')==False:
+        catbunny.dx=0
+    if keyboard.is_pressed('space') or keyboard.is_pressed('w'):
+        jump()
+
+
+def move_catbunny():
+    x = catbunny.xcor()
+    x += catbunny.dx
+    catbunny.setx(x)
+    
+##### GRAVITY ##############
+
+def grav():
+    catbunny.dy += GRAVITY
+    
+    # Move the catbunny
+    y = catbunny.ycor()
+    y += catbunny.dy
+    catbunny.sety(y)
+'''
+def gravOfAll():
+    if (catbunny.ycor()-40)*-1=>0:
+        gnd.sety((catbunny.ycor()-40)*-1)
+'''
+def ground():
+    if catbunny.ycor() < GROUND_LEVEL + catbunny.height / 2:
+        catbunny.sety(GROUND_LEVEL + catbunny.height / 2)
+        catbunny.dy = 0
+        catbunny.state = "ready"
+###########################
+def animation():
+    len_animation+=1
+    if lenloop%30==0:
+        if len_animation%2==0:
+            catbunny.shape(cb1)
+        elif len_animation%2!=0:
+            catbunny.shape(cb2)
+# im just puttin every def into a def so that the game loop doesnt look that crazy
+def movement():
+    triggermove()
+    move_catbunny()
+    grav()
+    ground()
+    animation()
+#######################
+
+
+while True: #game loop
+    movement()
+    clock.tick(60)
+    gnd.sety((catbunny.ycor()-40)*-1)
+    lenloop+=1
+
+
