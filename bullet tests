@@ -1,0 +1,66 @@
+import turtle
+import keyboard
+###################################
+wn=turtle.Screen()
+wn.bgcolor("pink")
+wn.setup(height=800, width=900)
+player=turtle.Turtle()
+player.shape("triangle")
+player.color("black")
+player.setheading(90)
+def move_right():
+    player.setheading(0)
+def move_left():
+    player.setheading(180)
+def move_up():
+    player.setheading(90)
+def move_down():
+    player.setheading(270)
+
+
+###################################
+
+bullet = turtle.Turtle()
+bullet.color("yellow")
+bullet.shape("triangle")
+bullet.penup()
+bullet.speed(0)
+bullet.setheading(90)
+bullet.shapesize(0.5, 0.5)
+bullet.fire_state="ready"
+bullet.dy=0
+bullet.setx(100000000000)
+
+def fire_bullet():
+    if bullet.fire_state=="ready":
+        bullet.setx(player.xcor())
+        bullet.sety(player.ycor())
+        bullet.setheading(player.heading())
+        bullet.dy=3
+        bullet.fire_state="fired"
+
+def move_bullet():
+    bullet.fd(bullet.dy)
+
+#def bullet_return():
+#    if bullet.xcor>=
+        
+#####################################
+def triggermove():
+    if keyboard.is_pressed('d'):
+        move_right()
+    elif keyboard.is_pressed('a'):
+        move_left()
+    elif keyboard.is_pressed('w'):
+        move_up()
+    elif keyboard.is_pressed('s'):
+        move_down()
+    if keyboard.is_pressed('space'):
+        fire_bullet()
+    
+
+
+
+while True:
+    triggermove()
+    move_bullet()
